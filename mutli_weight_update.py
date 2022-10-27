@@ -5,7 +5,7 @@ import math
 random.random()
 
 L = 4
-player_data = {"Najee":[10.9,10.1,8.9,8.6,8,100,100], "Ezekiel":[17.7,14.6,8.1,7.8,4.9,4.9], "Javonte":[8.8, 8.5, 6, 2.7, 1,1,20], "Mike":[17.3,14.6,13.4,12,7.5,1.7,1]}
+player_data = {"Najee":[10.6,13.9,13.1,7.4,6.6,12.9,11], "Ezekiel":[17.7,14.6,7.8,10.1,14.5,5.9,5.9], "Jakobi":[10.2, 18.5, 1,1, 24.1, 10, 11.4], "Darnell":[1.8,0.6,4.3,13.4,7.2,13.8,8.3]}
 names = list(player_data.keys())
 scores = list(player_data.values())
 n = len(names)  # number of experts
@@ -20,8 +20,8 @@ def mWWUA():
   lo = 1
   #weights is a list of nums that has a length of n
   # each asset's individual loss
-  Loss = {"Najee":[],"Ezekiel":[],"Javonte":[],"Mike":[],"Algorithm":[]}
-  weights = {"Najee":1,"Ezekiel":1,"Javonte":1,"Mike":1}
+  Loss = {"Najee":[],"Ezekiel":[],"Jakobi":[],"Mike":[], "Darnell":[],"Algorithm":[]}
+  weights = {"Najee":1,"Ezekiel":1,"Jakobi":1,"Mike":1,"Darnell":1}
   #initialize cumulative loss
   for i in range(T-1):
     curr_loss = []
@@ -55,6 +55,7 @@ def mWWUA():
           val = pred_val = player_data[name][i]
           Loss[name].append(lo)
           weights[name] *= (1-(eps*Loss[name][i]/L))
+        
         else:
           Loss[name].append(0)
       count += 1
@@ -84,14 +85,13 @@ def mWWUA():
         else:
              Loss["Algorithm"].append(0)
         for name in names:
-             if name != correct_name:
-                val = player_data[name][i]
-                if val < 5:
-                  lo = -math.log(val)
-                else:
-                  lo = 0
-                Loss[name].append(lo)
-                weights[name] *= (1-(eps*Loss[name][i]/L))
+          if name != correct_name:
+            val = player_data[name][i]
+            lo = -math.log(val)
+          else:
+              lo = 0
+          Loss[name].append(lo)
+          weights[name] *= (1-(eps*Loss[name][i]/L))
              else:
                 Loss[name].append(0)
   return res, weights
